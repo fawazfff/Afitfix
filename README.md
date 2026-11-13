@@ -60,5 +60,5 @@ Do not expose admin promotion as a public application feature.
 
 - Email/password authentication is implemented; email confirmation behavior follows your Supabase Auth settings.
 - Image uploads use a public bucket because reports are visible in the campus community. Do not upload private documents or sensitive personal information.
-- Notifications, student resolution confirmation is planned for a later feature pass.
+- Student confirmation or dispute of a proposed resolution is planned for a later feature pass.
 - Apply all SQL files in the order above before testing the live data features.

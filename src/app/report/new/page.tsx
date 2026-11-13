@@ -26,6 +26,8 @@ export default function NewReportPage() {
       if(!user){router.push("/login");return;}
       let image_url:string|null=null;
       if(photo){
+        if(photo.size>5*1024*1024) throw new Error("Please choose an image smaller than 5 MB.");
+        if(!["image/jpeg","image/png","image/webp"].includes(photo.type)) throw new Error("Please upload a JPG, PNG or WebP image.");
         const ext=photo.name.split(".").pop()?.toLowerCase()||"jpg";
         const path=`${user.id}/${crypto.randomUUID()}.${ext}`;
         const {error:uploadError}=await supabase.storage.from("complaint-images").upload(path,photo,{upsert:false,contentType:photo.type});

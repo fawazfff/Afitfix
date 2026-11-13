@@ -62,7 +62,7 @@ export default function LoginPage() {
         <label>Email address<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label>
         <label>Password<input required type="password" minLength={8} autoComplete={mode==="signin"?"current-password":"new-password"} value={password} onChange={e=>setPassword(e.target.value)} placeholder="At least 8 characters"/></label>
         {message && <p className="form-notice" role="status">{message}</p>}
-        <button className="primary-button auth-submit" disabled={busy}>{busy && <LoaderCircle className="spin" size={17}/ >}{mode==="signin"?"Sign in":"Create account"}</button>
+        <button className="primary-button auth-submit" disabled={busy}>{busy && <LoaderCircle className="spin" size={17}/>}{mode==="signin"?"Sign in":"Create account"}</button>
       </form>
       <p className="auth-switch">{mode==="signin"?"New to Afitfix?":"Already registered?"} <button onClick={()=>{setMode(mode==="signin"?"signup":"signin");setMessage("");}}>{mode==="signin"?"Create an account":"Sign in"}</button></p>
     </section>

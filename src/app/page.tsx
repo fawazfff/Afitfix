@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, ArrowRight, Bell, BookOpen, CheckCircle2, Lightbulb, MapPin, MessageCircle, Plus, ShieldCheck, ThumbsUp, Wrench } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, CheckCircle2, Lightbulb, MapPin, MessageCircle, Plus, ShieldCheck, ThumbsUp, Wrench } from "lucide-react";
 
 type DemoComplaint = {
   id: string;

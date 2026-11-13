@@ -1,37 +1,62 @@
 # Afitfix
 
-A mobile-first campus issue reporting and resolution platform.
+A mobile-first campus issue reporting and resolution platform for students and campus administrators.
 
 ## Stack
 
-- Next.js App Router + TypeScript
-- Tailwind CSS
-- Supabase Auth, Postgres and Storage
-- Lucide icons
-
-## Local development
-
-1. Install Node.js 20.9 or newer.
-2. Clone this repository.
-3. Install dependencies with `npm install`.
-4. Copy `.env.example` to `.env.local` and add your Supabase project URL and anon/publishable key.
-5. Run `npm run dev` and open http://localhost:3000.
+- Next.js 15 App Router + TypeScript
+- Tailwind CSS v4 and Lucide icons
+- Supabase Auth, Postgres, Row Level Security and Storage
+- Responsive layouts for Android Chrome and iPhone Safari
 
 ## Supabase setup
 
-1. Create a Supabase project.
-2. Open SQL Editor and run `supabase/schema.sql`.
-3. Create a Storage bucket named `complaint-images` (private by default; storage policies will be added with the upload feature).
-4. Add the project URL and anon/publishable key to your environment variables.
-5. Sign up your admin account, then promote it using the commented SQL statement at the bottom of `supabase/schema.sql`.
+1. Open the Supabase project SQL Editor.
+2. Run `supabase/schema.sql`.
+3. Run `supabase/privacy-fix.sql` to restrict access to private student profile fields.
+4. Run `supabase/storage.sql` to create the report-image bucket and its access policies.
+5. In Supabase Authentication settings, configure the allowed site URL and email redirect URLs for your deployed app.
+6. Add the public project URL and publishable key to your deployment environment variables.
 
-Never put a Supabase service-role key in a browser environment variable or commit it to GitHub.
+## Environment variables
 
-## MVP roles
+Copy `.env.example` to `.env.local` and fill in:
 
-- **Student:** submit reports, browse the community feed, comment, vote, track status and confirm/dispute a proposed resolution.
-- **Admin:** review reports, update status, add progress/resolution notes and manage reports.
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase publishable key)
 
-## Mobile design
+Never expose a Supabase secret/service-role key in the browser or commit it to GitHub. If a secret key has ever been shared publicly or in chat, rotate it in Supabase.
 
-The interface is designed mobile-first for Android Chrome and iPhone Safari, with safe-area spacing, touch-sized controls and responsive layouts.
+## Run locally
+
+1. Use Node.js 20.9 or newer.
+2. Run `npm install`.
+3. Run `npm run dev`.
+4. Open `http://localhost:3000`.
+
+## MVP routes
+
+- `/` Public introduction
+- `/login` Student registration and sign-in
+- `/dashboard` Authenticated campus feed and personal report summary
+- `/report/new` Submit a campus report with an optional image
+- `/admin` Admin-only report review and status management
+
+## First admin account
+
+Register your own account normally. Then, in the Supabase SQL Editor, promote that account using the project-owner SQL editor:
+
+```sql
+update public.profiles
+set role = 'admin'
+where email = 'your-admin-email@example.com';
+```
+
+Do not expose admin promotion as a public application feature.
+
+## Current limitations
+
+- Email/password authentication is implemented; email confirmation behavior follows your Supabase Auth settings.
+- Image uploads use a public bucket because reports are visible in the campus community. Do not upload private documents or sensitive personal information.
+- Notifications, comments, voting and student resolution confirmation are represented in the database foundation and are planned for the next feature pass; the current UI does not yet expose all of them.
+- Apply all SQL files in the order above before testing the live data features.

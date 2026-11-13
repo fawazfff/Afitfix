@@ -6,5 +6,3 @@ using (id = (select auth.uid()) or public.is_admin());
 
 revoke select on public.profiles from authenticated;
 grant select (id, full_name, role) on public.profiles to authenticated;
-grant select (id, full_name, role, email, matric_number, created_at)
-on public.profiles to authenticated;

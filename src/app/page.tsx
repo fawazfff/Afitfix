@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Activity, ArrowRight, Bell, BookOpen, CheckCircle2, ChevronRight, Droplets, Lightbulb, MapPin, MessageCircle, Plus, ShieldCheck, ThumbsUp, Wrench, Zap } from "lucide-react";
 
 type DemoComplaint = {
@@ -27,7 +28,7 @@ export default function Home() {
     <main className="app-shell">
       <header className="topbar">
         <a className="brand" href="#home" aria-label="Afitfix home"><span className="brand-mark"><Wrench size={19} strokeWidth={2.6} /></span>Afitfix</a>
-        <div className="topbar-actions"><button className="icon-button" aria-label="Notifications"><Bell size={18} /></button><span className="avatar" aria-label="Student profile">ST</span></div>
+        <div className="topbar-actions"><Link className="primary-button" href="/login">Sign in <ArrowRight size={15}/></Link></div>
       </header>
 
       <div className="page-wrap" id="home">
@@ -40,7 +41,7 @@ export default function Home() {
         <section className="hero-card" aria-labelledby="hero-title">
           <h2 id="hero-title">Notice a problem on campus?</h2>
           <p>Let the community know. Report an issue and follow it until it is fixed.</p>
-          <a className="primary-button" href="#reports">Report an issue <ArrowRight size={16} /></a>
+          <Link className="primary-button" href="/report/new">Report an issue <ArrowRight size={16} /></Link>
         </section>
 
         <section className="stats-grid" aria-label="Campus report summary">
@@ -72,12 +73,12 @@ export default function Home() {
       </div>
 
       <nav className="bottom-nav" aria-label="Main navigation">
-        <a className="nav-item active" href="#home"><Activity size={19} />Home</a>
-        <a className="nav-item" href="#reports"><BookOpen size={19} />Explore</a>
-        <a className="nav-item" href="#reports"><Plus size={20} />Report</a>
-        <a className="nav-item" href="#reports"><ShieldCheck size={19} />My reports</a>
+        <Link className="nav-item active" href="/"><Activity size={19} />Home</Link>
+        <Link className="nav-item" href="/dashboard"><BookOpen size={19} />Explore</Link>
+        <Link className="nav-item" href="/report/new"><Plus size={20} />Report</Link>
+        <Link className="nav-item" href="/dashboard"><ShieldCheck size={19} />My reports</Link>
       </nav>
-      <a className="fab" href="#reports" aria-label="Create a report"><Plus size={23} /></a>
+      <Link className="fab" href="/report/new" aria-label="Create a report"><Plus size={23} /></Link>
     </main>
   );
 }

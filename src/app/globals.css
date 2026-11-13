@@ -106,3 +106,8 @@ a { color: inherit; text-decoration: none; }
 .file-name { margin:-8px 0 0; color:var(--muted); font-size:11px; overflow-wrap:anywhere; }
 .admin-link a { display:inline-flex; align-items:center; gap:5px; color:var(--brand); font-size:13px; font-weight:750; }
 @media (min-width:720px) { .auth-shell { padding-top:30px; } .report-card { width:min(100%,620px); } }
+
+.admin-note-label { display:grid; gap:7px; margin-top:13px; color:#343a48; font-size:12px; font-weight:750; }
+.admin-note-label textarea,.admin-note-label select { width:100%; min-height:43px; padding:10px 12px; border:1px solid #dfe2e9; border-radius:11px; background:white; color:var(--ink); font:inherit; font-size:13px; }
+.admin-note-label textarea { resize:vertical; line-height:1.5; }
+.saving-label { display:inline-flex; align-items:center; gap:6px; margin-top:9px; color:var(--muted); font-size:11px; }

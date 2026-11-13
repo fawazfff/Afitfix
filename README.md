@@ -40,6 +40,8 @@ Never expose a Supabase secret/service-role key in the browser or commit it to G
 - `/login` Student registration and sign-in
 - `/dashboard` Authenticated campus feed and personal report summary
 - `/report/new` Submit a campus report with an optional image
+- `/report/[id]` View progress, add comments and support a report
+- `/notifications` Read report updates
 - `/admin` Admin-only report review and status management
 
 ## First admin account
@@ -58,5 +60,5 @@ Do not expose admin promotion as a public application feature.
 
 - Email/password authentication is implemented; email confirmation behavior follows your Supabase Auth settings.
 - Image uploads use a public bucket because reports are visible in the campus community. Do not upload private documents or sensitive personal information.
-- Notifications, comments, voting and student resolution confirmation are represented in the database foundation and are planned for the next feature pass; the current UI does not yet expose all of them.
+- Notifications, student resolution confirmation is planned for a later feature pass.
 - Apply all SQL files in the order above before testing the live data features.

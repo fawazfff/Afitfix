@@ -144,3 +144,5 @@ a { color: inherit; text-decoration: none; }
 .notification-item.read .notification-dot { background:#c8ccd5; }
 .notification-item strong { display:block; color:#343a48; font-size:13px; line-height:1.5; }
 .notification-item small { display:block; margin-top:5px; color:var(--muted); font-size:10px; }
+
+.signout-button { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:38px; padding:0 10px; border:1px solid var(--line); border-radius:11px; background:white; color:#596171; font-size:11px; font-weight:700; }

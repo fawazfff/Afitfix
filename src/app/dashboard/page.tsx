@@ -51,7 +51,7 @@ export default async function DashboardPage() {
       <div className="section-heading" id="community"><h2>Campus community</h2><span>Latest reports</span></div>
       {complaintsError ? <div className="empty-state">Could not load reports. Check that the Supabase schema has been applied.</div> : rows.length===0 ? <div className="empty-state">No reports yet. Be the first to let the community know what needs attention.</div> : <div className="feed-list">{rows.map(row=><article className="complaint-card" key={row.id}>
         <div className="card-meta"><span className="category-label">{row.category} · {row.tracking_code}</span><span className={`status-pill ${row.status}`}><Activity size={12}/>{labels[row.status]}</span></div>
-        <h3><Link href={`/report/${row.id}`}>{row.title}</Link></h3><p>{row.description}</p>
+        <h3><Link href={`/report/${row.id}`}>{row.title}</Link></h3>{row.image_url && <img className="report-card-photo" src={row.image_url} alt={`Photo for ${row.title}`} loading="lazy"/>}<p>{row.description}</p>
         <div className="card-footer"><span className="engagement"><span><MapPin size={13}/>{row.location}</span></span><span>{new Date(row.created_at).toLocaleDateString()}</span></div>
       </article>)}</div>}
       <div className="section-heading" id="activity"><h2>Your activity</h2></div>

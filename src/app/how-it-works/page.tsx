@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight, CheckCircle2, ClipboardList, MessageCircle, ShieldCheck, MapPin } from "lucide-react";
 
 const steps = [
@@ -9,7 +10,7 @@ const steps = [
 ];
 export default function HowItWorksPage(){
  return <main className="info-page">
-  <header className="info-nav"><Link className="brand" href="/"><span className="brand-mark"><ShieldCheck size={19}/></span>Afitfix</Link><Link className="info-nav-action" href="/login?mode=signup">Create account <ArrowRight size={15}/></Link></header>
+  <header className="info-nav"><Link className="brand" href="/"><span className="brand-mark brand-mark-crest"><Image src="/afit-crest.png" alt="AFIT crest" width={34} height={34} /></span>Afitfix</Link><Link className="info-nav-action" href="/login?mode=signup">Create account <ArrowRight size={15}/></Link></header>
   <section className="info-hero"><Link href="/" className="info-back"><ArrowLeft size={15}/> Back home</Link><span className="section-eyebrow">THE PROCESS / HOW IT WORKS</span><h1>From a campus concern<br/><em>to a report you can follow.</em></h1><p>Afitfix gives students one clear process for sharing campus issues and checking what happens next.</p></section>
   <section className="how-steps">{steps.map(({n,icon:Icon,title,body})=><article className="how-step" key={n}><span>{n}</span><Icon size={24}/><div><h2>{title}</h2><p>{body}</p></div></article>)}</section>
   <section className="info-bottom"><h2>Ready to report an issue?</h2><p>Create an account and let the campus community know what needs attention.</p><Link className="button button-orange" href="/login?mode=signup">Create your account <ArrowRight size={16}/></Link></section>

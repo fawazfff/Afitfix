@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Afitfix — A better campus starts with speaking up",
   description: "A student-built campus reporting platform for the Air Force Institute of Technology, Kaduna. Report issues and follow their progress.",
   applicationName: "Afitfix",
+  icons: { icon: "/afitfix-mark.svg", apple: "/afitfix-mark.svg" },
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Afitfix" },
   formatDetection: { telephone: false },
 };

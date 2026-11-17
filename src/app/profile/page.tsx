@@ -32,7 +32,7 @@ export default function ProfilePage() {
       <section className="complaint-card profile-card">
         {busy ? <div className="empty-state"><LoaderCircle className="spin" size={19}/> Loading profile…</div> : profile ? <>
           <div className="profile-avatar"><UserRound size={28}/></div><h2>{profile.full_name || "AFIT student"}</h2><span className="status-pill"><ShieldCheck size={13}/>{profile.role === "admin" ? "Administrator" : "Student"}</span>
-          <div className="profile-details"><div><span>Email address</span><strong>{email || "Not available"}</strong></div><div><span>Full name</span><strong>{profile.full_name || "Not provided"}</strong></div><div><span>Matric number</span><strong>{profile.matric_number || "Not provided"}</strong></div></div>
+          <div className="profile-details"><h3 className="profile-section-title">About me</h3><div><span>Email address</span><strong>{email || "Not available"}</strong></div><div><span>Full name</span><strong>{profile.full_name || "Not provided"}</strong></div><div><span>Matric number</span><strong>{profile.matric_number || "Not provided"}</strong></div></div>
         </> : <p className="muted-note">{message || "Profile unavailable."}</p>}
         {message && <p className="form-notice">{message}</p>}
       </section>

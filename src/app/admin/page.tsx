@@ -58,7 +58,7 @@ export default function AdminPage(){
  if(busy)return <main className="auth-shell"><div className="empty-state"><LoaderCircle className="spin" size={20}/> Loading admin workspace…</div></main>;
  if(!allowed)return <main className="auth-shell"><div className="empty-state">Checking admin access…</div></main>;
  return <main className="app-shell">
-  <header className="topbar"><Link className="brand" href="/dashboard"><span className="brand-mark"><Wrench size={19}/></span>Afitfix</Link><div className="topbar-actions"><span className="status-pill"><ShieldCheck size={13}/> Admin</span><SignOutButton/></div></header>
+  <header className="topbar"><Link className="brand" href="/dashboard"><span className="brand-mark"><img src="/afit-crest.png" alt="" /></span>Afitfix</Link><div className="topbar-actions"><span className="status-pill"><ShieldCheck size={13}/> Admin</span><SignOutButton/></div></header>
   <div className="page-wrap"><section className="welcome"><span className="eyebrow">Administration</span><h1>Reports workspace</h1><p>Review student reports and keep progress up to date.</p></section>
    <div className="stats-grid"><div className="stat-card"><strong>{rows.length}</strong><span>Loaded reports</span></div><div className="stat-card"><strong>{rows.filter(r=>r.status!=="resolved").length}</strong><span>Open reports in this list</span></div><div className="stat-card"><strong>{rows.filter(r=>r.status==="resolved").length}</strong><span>Resolved in this list</span></div></div>
    {notice&&<p className="form-notice" role="status" style={{marginTop:16}}>{notice}</p>}

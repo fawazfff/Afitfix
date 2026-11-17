@@ -1,8 +1,7 @@
 import Link from "next/link";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronDown,
-  ClipboardList, GraduationCap, MapPin, MessageCircle, ShieldCheck, Sparkles,
-  Wrench, Zap,
+  ClipboardList, GraduationCap, MapPin, MessageCircle, ShieldCheck, Wrench, Zap,
 } from "lucide-react";
 
 const issueTypes = [
@@ -52,13 +51,13 @@ export default function Home() {
       <header className="marketing-nav">
         <Brand />
         <nav className="desktop-links" aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <a href="#what-to-report">What to report</a>
-          <a href="#faq">FAQs</a>
+          <Link href="/how-it-works">How it works</Link>
+          <Link href="/what-to-report">What to report</Link>
+          <Link href="/faq">FAQs</Link>
         </nav>
         <div className="nav-cta">
           <Link href="/login" className="nav-signin">Sign in</Link>
-          <Link href="/register" className="button button-dark button-nav">Get started <ArrowUpRight size={16}/></Link>
+          <Link href="/login?mode=signup" className="button button-dark button-nav">Get started <ArrowUpRight size={16}/></Link>
         </div>
       </header>
 
@@ -68,8 +67,8 @@ export default function Home() {
           <h1>A better campus starts with <em>speaking up.</em></h1>
           <p className="hero-description">See something around AFIT that needs attention? Report it, bring it to the community’s attention and follow what happens next.</p>
           <div className="hero-actions">
-            <Link href="/register" className="button button-orange">Report an issue <ArrowRight size={17}/></Link>
-            <a href="#how-it-works" className="button button-outline">See how it works <ArrowDown size={16}/></a>
+            <Link href="/login?mode=signup" className="button button-orange">Report an issue <ArrowRight size={17}/></Link>
+            <Link href="/how-it-works" className="button button-outline">See how it works <ArrowDown size={16}/></Link>
           </div>
           <div className="hero-note"><ShieldCheck size={16}/> Clear reports. Visible progress. One campus community.</div>
         </div>
@@ -89,7 +88,7 @@ export default function Home() {
           <span className="art-spark art-spark-one">✳</span><span className="art-spark art-spark-two">✳</span>
           <div className="art-caption">Small reports can lead to meaningful improvements.</div>
         </div>
-        <a href="#how-it-works" className="scroll-cue"><span/> Scroll to explore</a>
+        <Link href="/how-it-works" className="scroll-cue"><span/> Explore Afitfix</Link>
       </section>
 
       <section className="intro-strip">
@@ -164,7 +163,7 @@ export default function Home() {
       <section className="community-band">
         <div className="community-mark"><AfitfixMark/></div>
         <div><span>BETTER INFORMATION. BETTER FOLLOW-THROUGH.</span><h2>One campus. A clearer way to speak up.</h2></div>
-        <Link href="/register" className="button button-cream">Create your account <ArrowUpRight size={16}/></Link>
+        <Link href="/login?mode=signup" className="button button-cream">Create your account <ArrowUpRight size={16}/></Link>
       </section>
 
       <section className="faq-section" id="faq">
@@ -183,11 +182,11 @@ export default function Home() {
         <span className="section-eyebrow">YOUR CAMPUS. YOUR VOICE.</span>
         <h2>See an issue?<br/><em>Let’s get it on the record.</em></h2>
         <p>Join the AFIT student community on Afitfix and help make campus concerns easier to follow.</p>
-        <Link href="/register" className="button button-orange">Get started with Afitfix <ArrowRight size={17}/></Link>
+        <Link href="/login?mode=signup" className="button button-orange">Get started with Afitfix <ArrowRight size={17}/></Link>
       </section>
 
       <footer className="marketing-footer">
-        <div className="footer-main"><div><Brand footer/><p>A student-built platform for reporting and following campus issues at the Air Force Institute of Technology, Kaduna.</p></div><div className="footer-links"><a href="#how-it-works">How it works</a><a href="#what-to-report">What to report</a><a href="#faq">FAQs</a><Link href="/login">Sign in</Link><Link href="/register">Create account</Link></div></div>
+        <div className="footer-main"><div><Brand footer/><p>A student-built platform for reporting and following campus issues at the Air Force Institute of Technology, Kaduna.</p></div><div className="footer-links"><a href="#how-it-works">How it works</a><a href="#what-to-report">What to report</a><Link href="/faq">FAQs</Link><Link href="/login">Sign in</Link><Link href="/login?mode=signup">Create account</Link></div></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Afitfix · Student project</span><span>Built for the AFIT community <GraduationCap size={14}/></span></div>
       </footer>
     </main>

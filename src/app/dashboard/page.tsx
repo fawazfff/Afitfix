@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Activity, ArrowUpRight, Bell, Plus, MapPin, Wrench } from "lucide-react";
+import { Activity, ArrowUpRight, Bell, Plus, MapPin, Wrench, ShieldCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Complaint, ComplaintStatus } from "@/lib/types";
 import { SignOutButton } from "@/app/components/sign-out-button";
@@ -38,7 +38,7 @@ export default async function DashboardPage() {
   const resolved = resolvedCount ?? 0;
 
   return <main className="app-shell">
-    <header className="topbar"><Link className="brand" href="/"><span className="brand-mark"><Wrench size={19}/></span>Afitfix</Link><div className="topbar-actions"><Link className="icon-button" href="/notifications" aria-label="Notifications"><Bell size={18}/></Link><span className="avatar">{firstName.slice(0,2).toUpperCase()}</span><SignOutButton/></div></header>
+    <header className="topbar"><Link className="brand" href="/"><span className="brand-mark"><img src="/afit-crest.png" alt="" /></span>Afitfix</Link><div className="topbar-actions"><Link className="icon-button" href="/notifications" aria-label="Notifications"><Bell size={18}/></Link><span className="avatar">{firstName.slice(0,2).toUpperCase()}</span><SignOutButton/></div></header>
     <div className="page-wrap">
       <section className="welcome"><span className="eyebrow">Student dashboard</span><h1>Welcome, {firstName}</h1><p>Here’s what’s happening across your campus.</p></section>
       <section className="hero-card"><h2>See something that needs fixing?</h2><p>Report it in a few steps and keep track of the progress.</p><Link className="primary-button" href="/report/new">Create a report <Plus size={17}/></Link></section>
@@ -48,13 +48,13 @@ export default async function DashboardPage() {
         <div className="stat-card"><strong>{countError ? "—" : resolved}</strong><span>Resolved</span></div>
       </section>
       {countError && <p className="muted-note" role="status">Your report totals could not be loaded. Please refresh in a moment.</p>}
-      <div className="section-heading"><h2>Campus community</h2><span>Latest reports</span></div>
+      <div className="section-heading" id="community"><h2>Campus community</h2><span>Latest reports</span></div>
       {complaintsError ? <div className="empty-state">Could not load reports. Check that the Supabase schema has been applied.</div> : rows.length===0 ? <div className="empty-state">No reports yet. Be the first to let the community know what needs attention.</div> : <div className="feed-list">{rows.map(row=><article className="complaint-card" key={row.id}>
         <div className="card-meta"><span className="category-label">{row.category} · {row.tracking_code}</span><span className={`status-pill ${row.status}`}><Activity size={12}/>{labels[row.status]}</span></div>
         <h3><Link href={`/report/${row.id}`}>{row.title}</Link></h3><p>{row.description}</p>
         <div className="card-footer"><span className="engagement"><span><MapPin size={13}/>{row.location}</span></span><span>{new Date(row.created_at).toLocaleDateString()}</span></div>
       </article>)}</div>}
-      <div className="section-heading"><h2>Your activity</h2></div>
+      <div className="section-heading" id="activity"><h2>Your activity</h2></div>
       <div className="complaint-card"><p>You have <strong>{countError ? "an unknown number of" : total}</strong> reports, with <strong>{countError ? "an unknown number of" : active}</strong> still active. Updates will appear here as admins review them.</p></div>
       {profile?.role==="admin" && <p className="admin-link"><Link href="/admin">Open admin dashboard <ArrowUpRight size={15}/></Link></p>}
     </div>

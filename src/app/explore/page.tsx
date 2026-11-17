@@ -19,7 +19,7 @@ export default async function ExplorePage() {
       <div className="section-heading"><h2>All campus reports</h2><span>Latest first · up to 100</span></div>
       {error ? <div className="empty-state">Could not load campus reports. Please refresh and try again.</div> : rows.length===0 ? <div className="empty-state">No reports have been submitted yet. You can start the conversation.</div> : <div className="feed-list">{rows.map(row=><article className="complaint-card" key={row.id}>
         <div className="card-meta"><span className="category-label">{row.category} · {row.tracking_code}</span><span className={`status-pill ${row.status}`}><Activity size={12}/>{labels[row.status]}</span></div>
-        <h3><Link href={`/report/${row.id}`}>{row.title}</Link></h3><p>{row.description}</p>
+        <h3><Link href={`/report/${row.id}`}>{row.title}</Link></h3>{row.image_url && <img className="report-card-photo" src={row.image_url} alt={`Photo for ${row.title}`} loading="lazy"/>}<p>{row.description}</p>
         <div className="card-footer"><span className="engagement"><span><MapPin size={13}/>{row.location}</span></span><span>{new Date(row.created_at).toLocaleDateString()}</span></div>
       </article>)}</div>}
       <p className="admin-link"><Link href="/dashboard"><ArrowLeft size={15}/> Back to dashboard</Link></p>

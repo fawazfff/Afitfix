@@ -38,7 +38,7 @@ export default async function DashboardPage() {
   const resolved = resolvedCount ?? 0;
 
   return <main className="app-shell">
-    <header className="topbar"><Link className="brand" href="/"><span className="brand-mark"><ShieldCheck size={19}/></span>Afitfix</Link><div className="topbar-actions"><Link className="icon-button" href="/notifications" aria-label="Notifications"><Bell size={18}/></Link><span className="avatar">{firstName.slice(0,2).toUpperCase()}</span><SignOutButton/></div></header>
+    <header className="topbar"><Link className="brand" href="/"><span className="brand-mark"><img src="/afit-crest.png" alt="" /></span>Afitfix</Link><div className="topbar-actions"><Link className="icon-button" href="/notifications" aria-label="Notifications"><Bell size={18}/></Link><span className="avatar">{firstName.slice(0,2).toUpperCase()}</span><SignOutButton/></div></header>
     <div className="page-wrap">
       <section className="welcome"><span className="eyebrow">Student dashboard</span><h1>Welcome, {firstName}</h1><p>Here’s what’s happening across your campus.</p></section>
       <section className="hero-card"><h2>See something that needs fixing?</h2><p>Report it in a few steps and keep track of the progress.</p><Link className="primary-button" href="/report/new">Create a report <Plus size={17}/></Link></section>

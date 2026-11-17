@@ -18,6 +18,8 @@ begin
 end;
 $$;
 
+revoke all on function public.notify_report_owner_on_status_change() from public, anon, authenticated;
+
 create trigger complaints_notify_owner
 after update of status on public.complaints
 for each row execute procedure public.notify_report_owner_on_status_change();
@@ -42,6 +44,8 @@ begin
   return new;
 end;
 $$;
+
+revoke all on function public.notify_report_owner_on_comment() from public, anon, authenticated;
 
 create trigger comments_notify_report_owner
 after insert on public.complaint_comments

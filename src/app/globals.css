@@ -473,3 +473,60 @@ button, a { transition: color .18s ease, background-color .18s ease, border-colo
 @media (prefers-reduced-motion:reduce) {
   *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; }
 }
+
+/* Dedicated information routes */
+.info-page { min-height:100svh; background:#fff; color:#14233f; }
+.info-nav { display:flex; height:76px; align-items:center; justify-content:space-between; padding:0 max(6%,calc((100% - 1120px)/2)); border-bottom:1px solid #e4eaf3; }
+.info-nav-action { display:inline-flex; align-items:center; gap:8px; color:#174ea6; font-size:13px; font-weight:750; }
+.info-hero { width:min(1120px,88%); margin:0 auto; padding:78px 0 72px; border-bottom:1px solid #e4eaf3; }
+.info-back { display:inline-flex; align-items:center; gap:8px; margin-bottom:44px; color:#687992; font-size:12px; font-weight:700; }
+.info-hero h1 { max-width:900px; margin:17px 0; font-size:clamp(44px,7vw,82px); line-height:1.02; letter-spacing:-.065em; }
+.info-hero h1 em { color:#2465b5; font-family:Georgia,serif; font-weight:400; }
+.info-hero>p { max-width:540px; margin:0; color:#65748b; font-size:15px; line-height:1.8; }
+.info-content { display:grid; width:min(1120px,88%); grid-template-columns:.7fr 1.3fr; gap:90px; margin:0 auto; padding:75px 0 100px; }
+.info-side>span { color:#245da9; font-size:10px; font-weight:800; letter-spacing:1px; }
+.info-side h2 { margin:17px 0; font-size:43px; line-height:1.06; letter-spacing:-.05em; }
+.info-side p { max-width:270px; margin:0 0 23px; color:#687992; font-size:13px; line-height:1.8; }
+.info-content .faq-list { border-top:1px solid #e4eaf3; }
+.info-bottom { display:grid; justify-items:center; padding:70px 20px; background:#eff5fc; text-align:center; }
+.info-bottom h2 { margin:0 0 9px; font-size:clamp(27px,4vw,39px); letter-spacing:-.04em; }
+.info-bottom p { max-width:480px; margin:0 0 22px; color:#65748b; font-size:13px; line-height:1.7; }
+.info-footer { display:flex; justify-content:space-between; gap:20px; padding:24px 6%; background:#102e63; color:#d6e3f5; font-size:11px; }
+.info-footer a:first-child { color:white; font-weight:800; }
+.how-steps { width:min(900px,88%); margin:0 auto; padding:55px 0 90px; }
+.how-step { display:grid; grid-template-columns:55px 35px 1fr; align-items:start; gap:18px; padding:28px 0; border-bottom:1px solid #e4eaf3; }
+.how-step>span { color:#2465b5; font-size:12px; font-weight:800; }
+.how-step>svg { color:#2465b5; }
+.how-step h2 { margin:0 0 8px; font-size:21px; letter-spacing:-.5px; }
+.how-step p { max-width:620px; margin:0; color:#65748b; font-size:13px; line-height:1.8; }
+.report-category-grid { display:grid; width:min(1120px,88%); grid-template-columns:repeat(4,1fr); gap:15px; margin:0 auto; padding:65px 0; }
+.report-category { min-height:240px; padding:24px; border:1px solid #e4eaf3; border-radius:16px; background:#fff; }
+.report-category>span { display:block; margin-bottom:30px; color:#8ba0bb; font-size:11px; font-weight:800; }
+.report-category>svg { color:#2465b5; }
+.report-category h2 { margin:18px 0 8px; font-size:17px; letter-spacing:-.4px; }
+.report-category p { margin:0; color:#687992; font-size:12px; line-height:1.7; }
+.report-guidance { display:flex; width:min(1120px,88%); align-items:center; justify-content:space-between; gap:35px; margin:0 auto 80px; padding:28px; border-radius:17px; background:#eff5fc; }
+.report-guidance>div { max-width:600px; }
+.report-guidance svg { color:#2465b5; }
+.report-guidance h2 { margin:10px 0 6px; font-size:20px; }
+.report-guidance p { margin:0; color:#65748b; font-size:13px; line-height:1.75; }
+@media(max-width:700px) {
+ .info-nav { height:66px; padding:0 6%; }
+ .info-hero { padding:52px 0 45px; }
+ .info-back { margin-bottom:32px; }
+ .info-hero h1 { font-size:clamp(42px,11vw,60px); }
+ .info-hero>p { font-size:13px; }
+ .info-content { grid-template-columns:1fr; gap:32px; padding:48px 0 65px; }
+ .info-side h2 { font-size:36px; }
+ .how-steps { padding:30px 0 55px; }
+ .how-step { grid-template-columns:34px 26px 1fr; gap:12px; padding:23px 0; }
+ .how-step h2 { font-size:18px; }
+ .report-category-grid { grid-template-columns:1fr 1fr; gap:9px; padding:40px 0; }
+ .report-category { min-height:205px; padding:17px; }
+ .report-category>span { margin-bottom:20px; }
+ .report-category h2 { font-size:15px; }
+ .report-category p { font-size:11px; }
+ .report-guidance { align-items:flex-start; flex-direction:column; margin-bottom:50px; padding:22px; }
+ .report-guidance .button { width:100%; }
+ .info-footer { flex-wrap:wrap; font-size:10px; }
+}

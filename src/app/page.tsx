@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronDown,

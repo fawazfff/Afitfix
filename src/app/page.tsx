@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronDown,
   ClipboardList, GraduationCap, MapPin, MessageCircle, ShieldCheck, Wrench, Zap,
@@ -26,12 +27,8 @@ const faqs = [
 
 function AfitfixMark({ small = false }: { small?: boolean }) {
   return (
-    <span className={`afitfix-mark ${small ? "afitfix-mark-small" : ""}`} aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="none">
-        <path d="M24 3.5 42 10v13.1c0 10.7-7.3 17.6-18 21.4C13.3 40.7 6 33.8 6 23.1V10L24 3.5Z" fill="currentColor" />
-        <path d="m16.2 24.4 5.2 5.1 10.7-11.1" stroke="#F8F3E8" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M32.8 9.4 37 10.9v4.3" stroke="#F07832" strokeWidth="2.5" strokeLinecap="round"/>
-      </svg>
+    <span className={`afitfix-mark ${small ? "afitfix-mark-small" : ""}`}>
+      <Image src="/afit-crest.png" alt="AFIT crest" width={48} height={48} className="afitfix-logo-image" />
     </span>
   );
 }

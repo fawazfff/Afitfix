@@ -62,7 +62,6 @@ export default function Home() {
 
       <section className="marketing-hero">
         <div className="hero-copy">
-          <div className="hero-kicker"><span className="kicker-dot"/> A student-built campus reporting platform</div>
           <h1>A better campus starts with <em>speaking up.</em></h1>
           <p className="hero-description">See something around AFIT that needs attention? Report it, bring it to the community’s attention and follow what happens next.</p>
           <div className="hero-actions">
@@ -185,7 +184,7 @@ export default function Home() {
       </section>
 
       <footer className="marketing-footer">
-        <div className="footer-main"><div><Brand footer/><p>A student-built platform for reporting and following campus issues at the Air Force Institute of Technology, Kaduna.</p></div><div className="footer-links"><a href="#how-it-works">How it works</a><a href="#what-to-report">What to report</a><Link href="/faq">FAQs</Link><Link href="/login">Sign in</Link><Link href="/login?mode=signup">Create account</Link></div></div>
+        <div className="footer-main"><div><Brand footer/><p>A platform for reporting and following campus issues at the Air Force Institute of Technology, Kaduna.</p></div><div className="footer-links"><a href="#how-it-works">How it works</a><a href="#what-to-report">What to report</a><Link href="/faq">FAQs</Link><Link href="/login">Sign in</Link><Link href="/login?mode=signup">Create account</Link></div></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Afitfix · Student project</span><span>Built for the AFIT community <GraduationCap size={14}/></span></div>
       </footer>
     </main>

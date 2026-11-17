@@ -1,15 +1,17 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, LoaderCircle, ShieldCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [mode, setMode] = useState<"signin" | "signup">(searchParams.get("mode") === "signup" ? "signup" : "signin");
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("mode") === "signup") setMode("signup");
+  }, []);
   const [fullName, setFullName] = useState("");
   const [matric, setMatric] = useState("");
   const [email, setEmail] = useState("");

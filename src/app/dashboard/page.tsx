@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Activity, ArrowUpRight, Bell, Plus, MapPin, Wrench, ShieldCheck } from "lucide-react";
+import { Activity, ArrowUpRight, Bell, Plus, MapPin, Wrench, Compass, UserRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Complaint, ComplaintStatus } from "@/lib/types";
 import { SignOutButton } from "@/app/components/sign-out-button";
@@ -38,7 +38,7 @@ export default async function DashboardPage() {
   const resolved = resolvedCount ?? 0;
 
   return <main className="app-shell">
-    <header className="topbar"><Link className="brand" href="/"><span className="brand-mark"><img src="/afit-crest.png" alt="" /></span>Afitfix</Link><div className="topbar-actions"><Link className="icon-button" href="/notifications" aria-label="Notifications"><Bell size={18}/></Link><span className="avatar">{firstName.slice(0,2).toUpperCase()}</span><SignOutButton/></div></header>
+    <header className="topbar"><Link className="brand" href="/dashboard"><span className="brand-mark"><img src="/afit-crest.png" alt="" /></span>Afitfix</Link><div className="topbar-actions"><Link className="icon-button" href="/notifications" aria-label="Notifications"><Bell size={18}/></Link><span className="avatar">{firstName.slice(0,2).toUpperCase()}</span><SignOutButton/></div></header>
     <div className="page-wrap">
       <section className="welcome"><span className="eyebrow">Student dashboard</span><h1>Welcome, {firstName}</h1><p>Here’s what’s happening across your campus.</p></section>
       <section className="hero-card"><h2>See something that needs fixing?</h2><p>Report it in a few steps and keep track of the progress.</p><Link className="primary-button" href="/report/new">Create a report <Plus size={17}/></Link></section>
@@ -58,6 +58,6 @@ export default async function DashboardPage() {
       <div className="complaint-card"><p>You have <strong>{countError ? "an unknown number of" : total}</strong> reports, with <strong>{countError ? "an unknown number of" : active}</strong> still active. Updates will appear here as admins review them.</p></div>
       {profile?.role==="admin" && <p className="admin-link"><Link href="/admin">Open admin dashboard <ArrowUpRight size={15}/></Link></p>}
     </div>
-    <nav className="bottom-nav"><Link className="nav-item active" href="/dashboard"><Activity size={19}/>Home</Link><Link className="nav-item" href="/dashboard#community"><Bell size={19}/>Explore</Link><Link className="nav-item" href="/report/new"><Plus size={20}/>Report</Link><Link className="nav-item" href="/dashboard#activity"><Wrench size={19}/>My reports</Link></nav>
+    <nav className="bottom-nav"><Link className="nav-item active" href="/dashboard"><Activity size={19}/>Home</Link><Link className="nav-item" href="/explore"><Compass size={19}/>Explore</Link><Link className="nav-item" href="/report/new"><Plus size={20}/>Report</Link><Link className="nav-item" href="/my-reports"><Wrench size={19}/>My reports</Link><Link className="nav-item" href="/profile"><UserRound size={19}/>Profile</Link></nav>
   </main>;
 }

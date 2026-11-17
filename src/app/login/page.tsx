@@ -53,7 +53,7 @@ export default function LoginPage() {
   return <main className="auth-shell">
     <Link href="/" className="auth-back"><ArrowLeft size={17}/> Back to Afitfix</Link>
     <section className="auth-card">
-      <div className="brand auth-brand"><span className="brand-mark"><ShieldCheck size={19}/></span>Afitfix</div>
+      <div className="brand auth-brand"><span className="brand-mark"><img src="/afit-crest.png" alt="" /></span>Afitfix</div>
       <span className="eyebrow">Your campus. Your voice.</span>
       <h1>{mode === "signin" ? "Welcome back" : "Join your campus community"}</h1>
       <p className="auth-copy">{mode === "signin" ? "Sign in to report issues and follow campus fixes." : "Create an account to report issues and support other students."}</p>

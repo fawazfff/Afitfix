@@ -2,9 +2,10 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Afitfix — Make campus better, together",
-  description: "Report campus issues, support your community and follow every fix.",
+  title: "Afitfix — A better campus starts with speaking up",
+  description: "A student-built campus reporting platform for the Air Force Institute of Technology, Kaduna. Report issues and follow their progress.",
   applicationName: "Afitfix",
+  icons: { icon: "/afitfix-mark.svg", apple: "/afitfix-mark.svg" },
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Afitfix" },
   formatDetection: { telephone: false },
 };
@@ -14,7 +15,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: "#f7f8fa",
+  themeColor: "#f7f3e9",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

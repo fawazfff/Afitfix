@@ -1,20 +1,34 @@
--- Afitfix MVP database schema
+-- Afitfix MVP database schema.
 -- Run this entire file in Supabase Dashboard > SQL Editor.
+-- Safe to run repeatedly on a fresh or already initialized Afitfix database.
 
 create extension if not exists pgcrypto;
 
-create type public.user_role as enum ('student', 'admin');
-create type public.complaint_status as enum (
-  'submitted',
-  'under_review',
-  'assigned',
-  'in_progress',
-  'awaiting_confirmation',
-  'resolved',
-  'reopened'
-);
+do $$
+begin
+  create type public.user_role as enum ('student', 'admin');
+exception
+  when duplicate_object then null;
+end
+$$;
 
-create table public.profiles (
+do $$
+begin
+  create type public.complaint_status as enum (
+    'submitted',
+    'under_review',
+    'assigned',
+    'in_progress',
+    'awaiting_confirmation',
+    'resolved',
+    'reopened'
+  );
+exception
+  when duplicate_object then null;
+end
+$$;
+
+create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text not null default 'Student',
   email text not null,
@@ -23,7 +37,7 @@ create table public.profiles (
   created_at timestamptz not null default now()
 );
 
-create table public.complaints (
+create table if not exists public.complaints (
   id uuid primary key default gen_random_uuid(),
   tracking_code text not null unique default ('AF-' || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 8))),
   user_id uuid not null references public.profiles(id) on delete cascade,
@@ -40,7 +54,7 @@ create table public.complaints (
   updated_at timestamptz not null default now()
 );
 
-create table public.complaint_comments (
+create table if not exists public.complaint_comments (
   id uuid primary key default gen_random_uuid(),
   complaint_id uuid not null references public.complaints(id) on delete cascade,
   user_id uuid not null references public.profiles(id) on delete cascade,
@@ -48,7 +62,7 @@ create table public.complaint_comments (
   created_at timestamptz not null default now()
 );
 
-create table public.complaint_votes (
+create table if not exists public.complaint_votes (
   id uuid primary key default gen_random_uuid(),
   complaint_id uuid not null references public.complaints(id) on delete cascade,
   user_id uuid not null references public.profiles(id) on delete cascade,
@@ -56,7 +70,7 @@ create table public.complaint_votes (
   unique (complaint_id, user_id)
 );
 
-create table public.complaint_status_history (
+create table if not exists public.complaint_status_history (
   id uuid primary key default gen_random_uuid(),
   complaint_id uuid not null references public.complaints(id) on delete cascade,
   changed_by uuid not null references public.profiles(id),
@@ -66,7 +80,7 @@ create table public.complaint_status_history (
   created_at timestamptz not null default now()
 );
 
-create table public.notifications (
+create table if not exists public.notifications (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
   complaint_id uuid references public.complaints(id) on delete cascade,
@@ -75,12 +89,11 @@ create table public.notifications (
   created_at timestamptz not null default now()
 );
 
-create index complaints_created_at_idx on public.complaints (created_at desc);
-create index complaints_status_idx on public.complaints (status);
-create index comments_complaint_created_idx on public.complaint_comments (complaint_id, created_at);
-create index notifications_user_created_idx on public.notifications (user_id, created_at desc);
+create index if not exists complaints_created_at_idx on public.complaints (created_at desc);
+create index if not exists complaints_status_idx on public.complaints (status);
+create index if not exists comments_complaint_created_idx on public.complaint_comments (complaint_id, created_at);
+create index if not exists notifications_user_created_idx on public.notifications (user_id, created_at desc);
 
--- Automatically create a student profile whenever a user signs up.
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -99,6 +112,7 @@ begin
 end;
 $$;
 
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
@@ -117,9 +131,9 @@ as $$
   );
 $$;
 
+revoke all on function public.is_admin() from public;
 grant execute on function public.is_admin() to authenticated;
 
--- Keep updated_at current on complaint changes.
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -131,9 +145,68 @@ begin
 end;
 $$;
 
+drop trigger if exists complaints_set_updated_at on public.complaints;
 create trigger complaints_set_updated_at
   before update on public.complaints
   for each row execute procedure public.set_updated_at();
+
+-- One RPC call performs both writes in one database transaction.
+-- SECURITY INVOKER preserves the table grants and RLS policies below.
+create or replace function public.admin_update_complaint_status(
+  p_complaint_id uuid,
+  p_new_status public.complaint_status,
+  p_note text default null
+)
+returns void
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_old_status public.complaint_status;
+  v_admin_id uuid;
+begin
+  v_admin_id := (select auth.uid());
+
+  if v_admin_id is null or not public.is_admin() then
+    raise exception 'Only administrators can update report statuses.'
+      using errcode = '42501';
+  end if;
+
+  select status
+    into v_old_status
+    from public.complaints
+    where id = p_complaint_id
+    for update;
+
+  if not found then
+    raise exception 'Report not found.' using errcode = 'P0002';
+  end if;
+
+  if v_old_status is not distinct from p_new_status then
+    return;
+  end if;
+
+  update public.complaints
+    set status = p_new_status,
+        resolution_note = case
+          when p_new_status = 'resolved' and nullif(trim(p_note), '') is not null
+            then trim(p_note)
+          else resolution_note
+        end
+    where id = p_complaint_id;
+
+  insert into public.complaint_status_history (
+    complaint_id, changed_by, old_status, new_status, note
+  )
+  values (
+    p_complaint_id, v_admin_id, v_old_status, p_new_status, nullif(trim(p_note), '')
+  );
+end;
+$$;
+
+revoke all on function public.admin_update_complaint_status(uuid, public.complaint_status, text) from public;
+grant execute on function public.admin_update_complaint_status(uuid, public.complaint_status, text) to authenticated;
 
 alter table public.profiles enable row level security;
 alter table public.complaints enable row level security;
@@ -142,12 +215,12 @@ alter table public.complaint_votes enable row level security;
 alter table public.complaint_status_history enable row level security;
 alter table public.notifications enable row level security;
 
--- Profiles: students can read the community names, but only their own profile;
--- admins can review all profiles. Students cannot change their role.
+drop policy if exists "Authenticated users can read profiles" on public.profiles;
 create policy "Authenticated users can read profiles"
   on public.profiles for select to authenticated
   using (true);
 
+drop policy if exists "Users can update their own basic profile" on public.profiles;
 create policy "Users can update their own basic profile"
   on public.profiles for update to authenticated
   using (id = (select auth.uid()))
@@ -156,66 +229,73 @@ create policy "Users can update their own basic profile"
 revoke update on public.profiles from authenticated;
 grant update (full_name, matric_number) on public.profiles to authenticated;
 
--- Complaints are visible to signed-in students for the community feed.
+drop policy if exists "Authenticated users can read complaints" on public.complaints;
 create policy "Authenticated users can read complaints"
   on public.complaints for select to authenticated
   using (true);
 
+drop policy if exists "Students can submit complaints" on public.complaints;
 create policy "Students can submit complaints"
   on public.complaints for insert to authenticated
   with check (user_id = (select auth.uid()));
 
+drop policy if exists "Admins can update complaints" on public.complaints;
 create policy "Admins can update complaints"
   on public.complaints for update to authenticated
   using (public.is_admin())
   with check (public.is_admin());
 
--- Comments: signed-in users can read and contribute; authors/admins can delete.
+drop policy if exists "Authenticated users can read comments" on public.complaint_comments;
 create policy "Authenticated users can read comments"
   on public.complaint_comments for select to authenticated
   using (true);
 
+drop policy if exists "Users can add their own comments" on public.complaint_comments;
 create policy "Users can add their own comments"
   on public.complaint_comments for insert to authenticated
   with check (user_id = (select auth.uid()));
 
+drop policy if exists "Authors and admins can delete comments" on public.complaint_comments;
 create policy "Authors and admins can delete comments"
   on public.complaint_comments for delete to authenticated
   using (user_id = (select auth.uid()) or public.is_admin());
 
--- Votes: one vote per user per report, enforced by the unique constraint.
+drop policy if exists "Authenticated users can read votes" on public.complaint_votes;
 create policy "Authenticated users can read votes"
   on public.complaint_votes for select to authenticated
   using (true);
 
+drop policy if exists "Users can cast their own votes" on public.complaint_votes;
 create policy "Users can cast their own votes"
   on public.complaint_votes for insert to authenticated
   with check (user_id = (select auth.uid()));
 
+drop policy if exists "Users can remove their own votes" on public.complaint_votes;
 create policy "Users can remove their own votes"
   on public.complaint_votes for delete to authenticated
   using (user_id = (select auth.uid()));
 
--- Only admins can create status-history entries.
+drop policy if exists "Authenticated users can read status history" on public.complaint_status_history;
 create policy "Authenticated users can read status history"
   on public.complaint_status_history for select to authenticated
   using (true);
 
+drop policy if exists "Admins can add status history" on public.complaint_status_history;
 create policy "Admins can add status history"
   on public.complaint_status_history for insert to authenticated
   with check (public.is_admin());
 
--- Notifications are private to their recipient.
+drop policy if exists "Users can read their notifications" on public.notifications;
 create policy "Users can read their notifications"
   on public.notifications for select to authenticated
   using (user_id = (select auth.uid()));
 
+drop policy if exists "Users can update their notifications" on public.notifications;
 create policy "Users can update their notifications"
   on public.notifications for update to authenticated
   using (user_id = (select auth.uid()))
   with check (user_id = (select auth.uid()));
 
--- Allow the app to access these tables through Supabase's Data API.
 grant usage on schema public to authenticated;
 grant select on public.profiles, public.complaints, public.complaint_comments,
   public.complaint_votes, public.complaint_status_history, public.notifications to authenticated;

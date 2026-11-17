@@ -530,3 +530,12 @@ button, a { transition: color .18s ease, background-color .18s ease, border-colo
  .report-guidance .button { width:100%; }
  .info-footer { flex-wrap:wrap; font-size:10px; }
 }
+
+
+/* Official AFIT crest branding */
+.brand-mark { width: 38px; height: 38px; padding: 2px; border-radius: 0; background: transparent; }
+.brand-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.afitfix-mark { width: 54px; height: 54px; color: inherit; }
+.afitfix-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.afitfix-mark-small { width: 38px; height: 38px; }
+.auth-brand .brand-mark { width: 54px; height: 54px; }

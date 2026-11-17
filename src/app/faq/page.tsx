@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight, ChevronDown, ShieldCheck } from "lucide-react";
 
 const questions = [
@@ -12,7 +13,7 @@ const questions = [
 
 export default function FAQPage() {
  return <main className="info-page">
-  <header className="info-nav"><Link className="brand" href="/"><span className="brand-mark"><ShieldCheck size={19}/></span>Afitfix</Link><Link className="info-nav-action" href="/login">Sign in <ArrowRight size={15}/></Link></header>
+  <header className="info-nav"><Link className="brand" href="/"><span className="brand-mark brand-mark-crest"><Image src="/afit-crest.png" alt="AFIT crest" width={34} height={34} /></span>Afitfix</Link><Link className="info-nav-action" href="/login">Sign in <ArrowRight size={15}/></Link></header>
   <section className="info-hero"><Link href="/" className="info-back"><ArrowLeft size={15}/> Back home</Link><span className="section-eyebrow">HELP CENTRE / FAQS</span><h1>Good questions.<br/><em>Clear answers.</em></h1><p>Everything you need to know about reporting and following campus issues with Afitfix.</p></section>
   <section className="info-content"><div className="info-side"><span>FREQUENTLY ASKED</span><h2>Before you<br/>get started.</h2><p>We want the reporting process to be straightforward and easy to follow.</p><Link href="/how-it-works" className="text-cta">How Afitfix works <ArrowRight size={16}/></Link></div><div className="faq-list">{questions.map(([q,a])=><details className="faq-item" key={q}><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></section>
   <section className="info-bottom"><h2>Still have a question?</h2><p>Sign in to your account and use the report comments to share context with the campus community.</p><Link className="button button-orange" href="/login">Go to Afitfix <ArrowRight size={16}/></Link></section>

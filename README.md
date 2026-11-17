@@ -11,19 +11,37 @@ A mobile-first campus issue reporting and resolution platform for students and c
 
 ## Supabase setup
 
-1. Open the Supabase project SQL Editor.
-2. Run `supabase/schema.sql`.
-3. Run `supabase/privacy-fix.sql` to restrict access to private student profile fields.
-4. Run `supabase/storage.sql` to create the report-image bucket and its access policies.
-5. In Supabase Authentication settings, configure the allowed site URL and email redirect URLs for your deployed app.
-6. Add the public project URL and publishable key to your deployment environment variables.
+The database is split into three SQL files. Run them in this order in the Supabase SQL Editor:
+
+1. `supabase/schema.sql` creates the app tables, profile-on-signup trigger, role helper, indexes and Row Level Security policies.
+2. `supabase/storage.sql` creates the public report-image bucket and owner-only upload/delete policies.
+3. `supabase/notifications.sql` creates in-app notifications when a report status changes or someone comments on a report.
+
+The schema keeps email addresses and matric numbers private. Signed-in students can see campus reports, comments, votes and status history, but can only read their own profile. Admin access is based on the protected `profiles.role` column, not editable signup metadata.
+
+## Authentication and protected routes
+
+- Email/password signup and sign-in are available at `/login`.
+- The middleware refreshes and validates the Supabase session.
+- `/dashboard`, `/report/*` and `/notifications` require a signed-in user.
+- `/admin` requires a signed-in user whose database profile role is `admin`.
+- Database Row Level Security remains the final permission boundary, even if someone bypasses a page redirect.
+
+In Supabase Dashboard > Authentication > URL Configuration, set the Site URL to your deployed app origin and add these Redirect URLs:
+
+- `http://localhost:3000/**` for local development
+- `https://YOUR-DEPLOYED-DOMAIN/**` for the deployed app (replace with your real Vercel domain)
+
+Email confirmation behavior follows the Supabase Auth settings for the project.
 
 ## Environment variables
 
 Copy `.env.example` to `.env.local` and fill in:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase publishable key)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` (the Supabase publishable key)
+
+Add the same two values to the Vercel project's environment variables for Preview and Production, then redeploy.
 
 Never expose a Supabase secret/service-role key in the browser or commit it to GitHub. If a secret key has ever been shared publicly or in chat, rotate it in Supabase.
 
@@ -46,7 +64,9 @@ Never expose a Supabase secret/service-role key in the browser or commit it to G
 
 ## First admin account
 
-Register your own account normally. Then, in the Supabase SQL Editor, promote that account using the project-owner SQL editor:
+1. Register your own account normally.
+2. Confirm the email if confirmation is enabled.
+3. In Supabase SQL Editor, promote the account using the project-owner SQL editor:
 
 ```sql
 update public.profiles
@@ -58,7 +78,5 @@ Do not expose admin promotion as a public application feature.
 
 ## Current limitations
 
-- Email/password authentication is implemented; email confirmation behavior follows your Supabase Auth settings.
-- Image uploads use a public bucket because reports are visible in the campus community. Do not upload private documents or sensitive personal information.
 - Student confirmation or dispute of a proposed resolution is planned for a later feature pass.
-- Apply all SQL files in the order above before testing the live data features.
+- Report images are stored in a public bucket because reports are visible in the campus community. Do not upload private documents or sensitive personal information.

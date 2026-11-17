@@ -1,4 +1,6 @@
--- Run after schema.sql. Creates in-app alerts for report owners.
+-- Run after schema.sql. Safe to run repeatedly.
+-- These triggers run in the same transaction as the report update or comment.
+
 create or replace function public.notify_report_owner_on_status_change()
 returns trigger
 language plpgsql
@@ -18,6 +20,9 @@ begin
 end;
 $$;
 
+revoke all on function public.notify_report_owner_on_status_change() from public;
+
+drop trigger if exists complaints_notify_owner on public.complaints;
 create trigger complaints_notify_owner
 after update of status on public.complaints
 for each row execute procedure public.notify_report_owner_on_status_change();
@@ -43,6 +48,9 @@ begin
 end;
 $$;
 
+revoke all on function public.notify_report_owner_on_comment() from public;
+
+drop trigger if exists comments_notify_report_owner on public.complaint_comments;
 create trigger comments_notify_report_owner
 after insert on public.complaint_comments
 for each row execute procedure public.notify_report_owner_on_comment();

@@ -31,29 +31,38 @@ export default function AdminPage(){
   setAllowed(true);setBusy(false);
  })();return()=>{live=false}},[router]);
  async function changeStatus(row:Complaint,next:ComplaintStatus){
+  if(next===row.status)return;
   setSaving(row.id);setNotice("");
   try{
    const supabase=createClient();
-   const {data:{user}}=await supabase.auth.getUser();
-   if(!user)throw new Error("Please sign in again.");
    const note=notes[row.id]?.trim()||null;
-   const {error}=await supabase.from("complaints").update({status:next,...(next==="resolved"&&note?{resolution_note:note}:{})}).eq("id",row.id);
+   const {error}=await supabase.rpc("admin_update_complaint_status",{
+    p_complaint_id:row.id,
+    p_new_status:next,
+    p_note:note,
+   });
    if(error)throw error;
-   const history=await supabase.from("complaint_status_history").insert({complaint_id:row.id,changed_by:user.id,old_status:row.status,new_status:next,note});
-   if(history.error)throw history.error;
-   setRows(current=>current.map(item=>item.id===row.id?{...item,status:next,updated_at:new Date().toISOString()}:item));
+   setRows(current=>current.map(item=>item.id===row.id?{
+    ...item,
+    status:next,
+    updated_at:new Date().toISOString(),
+    ...(next==="resolved"&&note?{resolution_note:note}:{}),
+   }:item));
    setNotice(`${row.tracking_code} updated to ${labels[next]}.`);
-  }catch(error){setNotice(error instanceof Error?error.message:"Could not update this report.");}
-  finally{setSaving(null);}
+  }catch(error){
+   setNotice(error instanceof Error?error.message:"Could not update this report. No changes were saved.");
+  }finally{
+   setSaving(null);
+  }
  }
  if(busy)return <main className="auth-shell"><div className="empty-state"><LoaderCircle className="spin" size={20}/> Loading admin workspace…</div></main>;
  if(!allowed)return <main className="auth-shell"><div className="empty-state">Checking admin access…</div></main>;
  return <main className="app-shell">
   <header className="topbar"><Link className="brand" href="/dashboard"><span className="brand-mark"><Wrench size={19}/></span>Afitfix</Link><div className="topbar-actions"><span className="status-pill"><ShieldCheck size={13}/> Admin</span><SignOutButton/></div></header>
   <div className="page-wrap"><section className="welcome"><span className="eyebrow">Administration</span><h1>Reports workspace</h1><p>Review student reports and keep progress up to date.</p></section>
-   <div className="stats-grid"><div className="stat-card"><strong>{rows.length}</strong><span>Total reports</span></div><div className="stat-card"><strong>{rows.filter(r=>r.status!=="resolved").length}</strong><span>Open reports</span></div><div className="stat-card"><strong>{rows.filter(r=>r.status==="resolved").length}</strong><span>Resolved</span></div></div>
+   <div className="stats-grid"><div className="stat-card"><strong>{rows.length}</strong><span>Loaded reports</span></div><div className="stat-card"><strong>{rows.filter(r=>r.status!=="resolved").length}</strong><span>Open reports in this list</span></div><div className="stat-card"><strong>{rows.filter(r=>r.status==="resolved").length}</strong><span>Resolved in this list</span></div></div>
    {notice&&<p className="form-notice" role="status" style={{marginTop:16}}>{notice}</p>}
-   <div className="section-heading"><h2>All reports</h2><span>Latest first</span></div>
+   <div className="section-heading"><h2>All reports</h2><span>Latest first · up to 100</span></div>
    {rows.length===0?<div className="empty-state">There are no reports to review yet.</div>:<div className="feed-list">{rows.map(row=><article className="complaint-card" key={row.id}>
     <div className="card-meta"><span className="category-label">{row.category} · {row.tracking_code}</span><span className={`status-pill ${row.status}`}><Activity size={12}/>{labels[row.status]}</span></div>
     <h3>{row.title}</h3><p>{row.description}</p><div className="card-footer"><span>{row.location}</span><span>{new Date(row.created_at).toLocaleDateString()}</span></div>

@@ -6,6 +6,14 @@ export async function middleware(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  const redirectWithCookies = (destination: URL) => {
+    const redirectResponse = NextResponse.redirect(destination);
+    response.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie);
+    });
+    return redirectResponse;
+  };
+
   if (!url || !key) {
     const protectedPath =
       request.nextUrl.pathname.startsWith("/dashboard") ||
@@ -16,7 +24,7 @@ export async function middleware(request: NextRequest) {
     if (protectedPath) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("next", request.nextUrl.pathname);
-      return NextResponse.redirect(loginUrl);
+      return redirectWithCookies(loginUrl);
     }
     return response;
   }
@@ -49,7 +57,7 @@ export async function middleware(request: NextRequest) {
   if (requiresAuth && !user) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(loginUrl);
+    return redirectWithCookies(loginUrl);
   }
 
   if (pathname.startsWith("/admin") && user) {
@@ -60,7 +68,7 @@ export async function middleware(request: NextRequest) {
       .maybeSingle();
 
     if (error || profile?.role !== "admin") {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return redirectWithCookies(new URL("/dashboard", request.url));
     }
   }
 

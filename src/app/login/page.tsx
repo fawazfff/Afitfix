@@ -14,6 +14,8 @@ export default function LoginPage() {
   }, []);
   const [fullName, setFullName] = useState("");
   const [matric, setMatric] = useState("");
+  const [course, setCourse] = useState("");
+  const [level, setLevel] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
@@ -44,7 +46,7 @@ export default function LoginPage() {
         const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
-          options: { data: { full_name: cleanName, matric_number: matric.trim() } },
+          options: { data: { full_name: cleanName, matric_number: matric.trim(), course_of_study: course, academic_level: level } },
         });
         if (error) throw error;
         if (data.session && data.user && photo) {
@@ -60,7 +62,7 @@ export default function LoginPage() {
           router.push("/dashboard");
           router.refresh();
         } else {
-          setMessage(photo ? "Account created. Confirm your email, then sign in and add your profile picture from Profile." : "Account created. Check your email to confirm your address, then sign in.");
+          setMessage(photo ? "Account created. Check your email to confirm your address. After signing in, you can upload your selected profile picture from Profile." : "Account created. Check your email to confirm your address, then sign in.");
           setMode("signin");
           setPassword("");
           setPhoto(null); setPreview("");
@@ -89,6 +91,8 @@ export default function LoginPage() {
         {mode === "signup" && <>
           <label>Full name<input required autoComplete="name" minLength={2} maxLength={100} value={fullName} onChange={e=>setFullName(e.target.value)} placeholder="Your first and last name"/></label>
           <label>Matric number <span className="optional">Optional</span><input maxLength={40} value={matric} onChange={e=>setMatric(e.target.value)} placeholder="Your matric number"/></label>
+          <label>Course of study<select required value={course} onChange={e=>setCourse(e.target.value)}><option value="">Select your course</option><option value="Computer Science">Computer Science</option><option value="Cyber Security">Cyber Security</option></select></label>
+          <label>Academic level<select required value={level} onChange={e=>setLevel(e.target.value)}><option value="">Select your level</option>{["100 Level","200 Level","300 Level","400 Level","500 Level"].map(item=><option key={item} value={item}>{item}</option>)}</select></label>
           <label className="signup-photo-label">Profile picture <span className="optional">Optional · JPG, PNG or WebP · max 3 MB</span><span className="profile-photo-control"><Camera size={16}/> Choose a photo<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>choosePhoto(e.target.files?.[0] ?? null)}/></span></label>
           {preview && <img className="signup-avatar-preview" src={preview} alt="Selected profile picture preview"/>}
           {photo && <p className="file-name">Selected: {photo.name}</p>}

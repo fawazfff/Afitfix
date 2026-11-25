@@ -24,6 +24,6 @@ export default async function MyReportsPage() {
       </article>)}</div>}
       <p className="admin-link"><Link href="/dashboard"><ArrowLeft size={15}/> Back to dashboard</Link></p>
     </div>
-    <nav className="bottom-nav"><Link className="nav-item" href="/dashboard"><Activity size={19}/>Home</Link><Link className="nav-item" href="/explore"><Bell size={19}/>Explore</Link><Link className="nav-item" href="/report/new"><Plus size={20}/>Report</Link><Link className="nav-item active" href="/my-reports"><Wrench size={19}/>My reports</Link><Link className="nav-item" href="/profile">Profile</Link></nav>
+    <nav className="bottom-nav"><Link className="nav-item active" href="/dashboard"><Activity size={19}/>Home</Link><Link className="nav-item" href="/explore"><Compass size={19}/>Explore</Link><Link className="nav-item" href="/profile"><UserRound size={19}/>Profile</Link></nav>
   </main>;
 }

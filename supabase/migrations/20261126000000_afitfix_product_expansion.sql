@@ -61,7 +61,7 @@ create or replace function public.student_confirm_resolution(
 )
 returns void
 language plpgsql
-security invoker
+security definer
 set search_path = ''
 as $$
 declare

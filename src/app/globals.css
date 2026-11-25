@@ -672,3 +672,10 @@ button, a { transition: color .18s ease, background-color .18s ease, border-colo
 .profile-activity-stats strong{font-size:24px;color:#174ea6}
 .profile-activity-stats span{font-size:11px;color:var(--muted)}
 .student-avatar{width:38px;height:38px;flex:0 0 38px;border-radius:50%;object-fit:cover}
+
+.profile-completion{width:100%;padding:15px;border:1px solid var(--line);border-radius:12px;background:#f8faff}
+.profile-completion>div:first-child{display:flex;align-items:center;justify-content:space-between;color:#53647e;font-size:12px}
+.profile-completion strong{color:#174ea6;font-size:15px}
+.profile-completion-track{height:6px;margin:10px 0 7px;overflow:hidden;border-radius:10px;background:#e5ebf4}
+.profile-completion-track span{display:block;height:100%;border-radius:10px;background:#2465b5;transition:width .2s ease}
+.profile-completion small{color:#8390a3;font-size:10px}

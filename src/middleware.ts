@@ -8,22 +8,22 @@ export async function middleware(request: NextRequest) {
 
   const redirectWithCookies = (destination: URL) => {
     const redirectResponse = NextResponse.redirect(destination);
-    response.cookies.getAll().forEach((cookie) => {
-      redirectResponse.cookies.set(cookie);
-    });
+    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
     return redirectResponse;
   };
 
-  if (!url || !key) {
-    const protectedPath =
-      request.nextUrl.pathname.startsWith("/dashboard") ||
-      request.nextUrl.pathname.startsWith("/report") ||
-      request.nextUrl.pathname.startsWith("/notifications") ||
-      request.nextUrl.pathname.startsWith("/admin");
+  const pathname = request.nextUrl.pathname;
+  const isAdminLogin = pathname === "/admin/login";
+  const requiresAuth =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/report") ||
+    pathname.startsWith("/notifications") ||
+    (pathname.startsWith("/admin") && !isAdminLogin);
 
-    if (protectedPath) {
-      const loginUrl = new URL("/login", request.url);
-      loginUrl.searchParams.set("next", request.nextUrl.pathname);
+  if (!url || !key) {
+    if (requiresAuth) {
+      const loginUrl = new URL(isAdminLogin ? "/admin/login" : "/login", request.url);
+      loginUrl.searchParams.set("next", pathname);
       return redirectWithCookies(loginUrl);
     }
     return response;
@@ -35,41 +35,30 @@ export async function middleware(request: NextRequest) {
       setAll(cookiesToSet: { name: string; value: string; options?: Parameters<typeof response.cookies.set>[2] }[]) {
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
         response = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options)
-        );
+        cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
       },
     },
   });
 
-  // Validate the cookie-backed session with Supabase before trusting it.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
-  const requiresAuth =
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/report") ||
-    pathname.startsWith("/notifications") ||
-    pathname.startsWith("/admin");
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (requiresAuth && !user) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = new URL(pathname.startsWith("/admin") ? "/admin/login" : "/login", request.url);
     loginUrl.searchParams.set("next", pathname);
     return redirectWithCookies(loginUrl);
   }
 
-  if (pathname.startsWith("/admin") && user) {
+  if (pathname.startsWith("/admin") && !isAdminLogin && user) {
     const { data: profile, error } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
-
+      .from("profiles").select("role").eq("id", user.id).maybeSingle();
     if (error || profile?.role !== "admin") {
       return redirectWithCookies(new URL("/dashboard", request.url));
     }
+  }
+
+  if (isAdminLogin && user) {
+    const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle();
+    if (profile?.role === "admin") return redirectWithCookies(new URL("/admin", request.url));
   }
 
   return response;

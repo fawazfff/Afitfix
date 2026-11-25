@@ -2,12 +2,11 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, LoaderCircle, ShieldCheck } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -25,7 +24,7 @@ export default function AdminLoginPage() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Unable to sign in.");
-      const next = searchParams.get("next");
+      const next = new URLSearchParams(window.location.search).get("next");
       router.replace(next?.startsWith("/admin") ? next : "/admin");
       router.refresh();
     } catch (error) {

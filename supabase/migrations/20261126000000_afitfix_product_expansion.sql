@@ -4,7 +4,7 @@
 alter table public.profiles
   add column if not exists avatar_url text;
 
-grant select (matric_number, avatar_url) on public.profiles to authenticated;
+grant select (matric_number, avatar_url, email, created_at) on public.profiles to authenticated;
 grant update (avatar_url) on public.profiles to authenticated;
 
 create table if not exists public.admin_report_notes (

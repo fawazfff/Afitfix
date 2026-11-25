@@ -21,13 +21,15 @@ export default async function DashboardPage() {
     { data: complaints, error: complaintsError },
     { count: totalCount, error: totalError },
     { count: activeCount, error: activeError },
-    { count: resolvedCount, error: resolvedError },\n    { data: announcements },
+    { count: resolvedCount, error: resolvedError },
+    { data: announcements },
   ] = await Promise.all([
     supabase.from("profiles").select("full_name,role").eq("id", user.id).single(),
     supabase.from("complaints").select("id,tracking_code,user_id,title,description,category,location,image_url,status,created_at,updated_at").order("created_at", { ascending: false }).limit(30),
     supabase.from("complaints").select("id", { count: "exact", head: true }).eq("user_id", user.id),
     supabase.from("complaints").select("id", { count: "exact", head: true }).eq("user_id", user.id).neq("status", "resolved"),
-    supabase.from("complaints").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "resolved"),\n    supabase.from("announcements").select("id,title,body,created_at,is_pinned").eq("is_published", true).order("is_pinned", {ascending:false}).order("created_at", {ascending:false}).limit(3),
+    supabase.from("complaints").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "resolved"),
+    supabase.from("announcements").select("id,title,body,created_at,is_pinned").eq("is_published", true).order("is_pinned", {ascending:false}).order("created_at", {ascending:false}).limit(3),
   ]);
 
   const rows = (complaints ?? []) as Complaint[];
@@ -41,7 +43,8 @@ export default async function DashboardPage() {
     <header className="topbar"><Link className="brand" href="/dashboard"><span className="brand-mark"><img src="/afit-crest.png" alt="" /></span>Afitfix</Link><div className="topbar-actions"><Link className="icon-button" href="/notifications" aria-label="Notifications"><Bell size={18}/></Link><span className="avatar">{firstName.slice(0,2).toUpperCase()}</span><SignOutButton/></div></header>
     <div className="page-wrap">
       <section className="welcome"><span className="eyebrow">Student dashboard</span><h1>Welcome, {firstName}</h1><p>Here’s what’s happening across your campus.</p></section>
-      {(announcements ?? []).length > 0 && <section className="announcement-feed"><div className="section-heading"><h2>Campus announcements</h2><span>From Afitfix admins</span></div>{announcements?.map(item=><article className="complaint-card announcement-student-card" key={item.id}><span className="eyebrow">Campus update</span><h3>{item.title}</h3><p>{item.body}</p><small>{new Date(item.created_at).toLocaleDateString()}</small></article>)}</section>}\n      <section className="hero-card"><h2>See something that needs fixing?</h2><p>Report it in a few steps and keep track of the progress.</p><Link className="primary-button" href="/report/new">Create a report <Plus size={17}/></Link></section>
+      {(announcements ?? []).length > 0 && <section className="announcement-feed"><div className="section-heading"><h2>Campus announcements</h2><span>From Afitfix admins</span></div>{announcements?.map(item=><article className="complaint-card announcement-student-card" key={item.id}><span className="eyebrow">Campus update</span><h3>{item.title}</h3><p>{item.body}</p><small>{new Date(item.created_at).toLocaleDateString()}</small></article>)}</section>}
+      <section className="hero-card"><h2>See something that needs fixing?</h2><p>Report it in a few steps and keep track of the progress.</p><Link className="primary-button" href="/report/new">Create a report <Plus size={17}/></Link></section>
       <section className="stats-grid" aria-label="Your report statistics">
         <div className="stat-card"><strong>{countError ? "—" : total}</strong><span>Your reports</span></div>
         <div className="stat-card"><strong>{countError ? "—" : active}</strong><span>Still active</span></div>

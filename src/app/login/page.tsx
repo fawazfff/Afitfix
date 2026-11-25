@@ -38,7 +38,7 @@ export default function LoginPage() {
     try {
       const supabase = createClient();
       if (mode === "signup") {
-        const cleanName = fullName.trim().replace(/\\s+/g, " ");
+        const cleanName = fullName.trim().replace(/\s+/g, " ");
         if (cleanName.length < 2) throw new Error("Enter your first and last name.");
         if (photo && (photo.size > 3 * 1024 * 1024 || !["image/jpeg", "image/png", "image/webp"].includes(photo.type))) {
           throw new Error("Choose a JPG, PNG or WebP image smaller than 3 MB.");

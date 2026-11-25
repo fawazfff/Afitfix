@@ -78,7 +78,7 @@ export default function ProfilePage() {
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const cleanName = name.trim().replace(/\\s+/g, " ");
+    const cleanName = name.trim().replace(/\s+/g, " ");
     if (cleanName.length < 2) { setMessage("Enter your first and last name."); return; }
     setSaving(true); setMessage("");
     try {

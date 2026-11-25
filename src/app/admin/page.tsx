@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Activity, Bell, BookOpen, CheckCircle2, ClipboardList, FileText, LoaderCircle, Megaphone, Search, ShieldCheck, Users, Wrench } from "lucide-react";
+import { Activity, BookOpen, CheckCircle2, ClipboardList, LoaderCircle, Megaphone, Search, ShieldCheck, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Complaint, ComplaintStatus } from "@/lib/types";
 import { SignOutButton } from "@/app/components/sign-out-button";

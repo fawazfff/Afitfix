@@ -12,11 +12,13 @@ export default function NotificationsPage(){
  const router=useRouter();
  const [items,setItems]=useState<Notice[]>([]);
  const [busy,setBusy]=useState(true);
- const [message,setMessage]=useState("");\n const [userId,setUserId]=useState("");
+ const [message,setMessage]=useState("");
+ const [userId,setUserId]=useState("");
  useEffect(()=>{let active=true;(async()=>{
   const supabase=createClient();
   const {data:{user}}=await supabase.auth.getUser();
-  if(!user){router.replace("/login");return;}\n  setUserId(user.id);
+  if(!user){router.replace("/login");return;}
+  setUserId(user.id);
   const {data,error}=await supabase.from("notifications").select("id,message,is_read,created_at,complaint_id").eq("user_id",user.id).order("created_at",{ascending:false}).limit(50);
   if(!active)return;
   if(error)setMessage(error.message);else setItems((data??[]) as Notice[]);

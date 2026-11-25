@@ -29,6 +29,7 @@ export default function AdminPage(){
  const [history,setHistory]=useState<History[]>([]);
  const [notes,setNotes]=useState<AdminNote[]>([]);
  const [draftNotes,setDraftNotes]=useState<Record<string,string>>({});
+ const [progressDrafts,setProgressDrafts]=useState<Record<string,string>>({});
  const [search,setSearch]=useState("");
  const [statusFilter,setStatusFilter]=useState("all");
  const [categoryFilter,setCategoryFilter]=useState("all");
@@ -94,6 +95,17 @@ export default function AdminPage(){
   setSaving(null);
  }
 
+ async function addProgressUpdate(event:FormEvent<HTMLFormElement>,row:Complaint){
+  event.preventDefault();const note=progressDrafts[row.id]?.trim();if(!note)return;
+  setSaving("progress-"+row.id);setMessage("");
+  const {data,error}=await createClient().from("complaint_status_history").insert({
+   complaint_id:row.id,changed_by:adminId,old_status:row.status,new_status:row.status,note
+  }).select("id,complaint_id,new_status,note,created_at").single();
+  if(error)setMessage("Could not publish progress update: "+error.message);
+  else{setHistory(current=>[data as History,...current]);setProgressDrafts(current=>({...current,[row.id]:""}));setMessage("Progress update published to the student report.");}
+  setSaving(null);
+ }
+
  async function publishAnnouncement(event:FormEvent<HTMLFormElement>){
   event.preventDefault();if(!noticeTitle.trim()||!noticeBody.trim())return;setSaving("announcement");setMessage("");
   const {data,error}=await createClient().from("announcements").insert({title:noticeTitle.trim(),body:noticeBody.trim(),created_by:adminId,is_published:true}).select("*").single();
@@ -135,6 +147,7 @@ export default function AdminPage(){
       {row.image_url&&<a href={row.image_url} target="_blank" rel="noreferrer"><img className="admin-report-image" src={row.image_url} alt={`Attachment for ${row.title}`}/></a>}
       <p>{row.description}</p><div className="card-footer"><span>{row.location}</span><span>{new Date(row.created_at).toLocaleString()}</span></div>
       <div className="admin-report-actions"><label>Change status<select value={row.status} disabled={saving===row.id} onChange={e=>changeStatus(row,e.target.value as ComplaintStatus)}>{statuses.map(s=><option key={s} value={s}>{labels[s]}</option>)}</select></label><Link className="text-action" href={`/report/${row.id}`}>Open public report ↗</Link></div>
+      <div className="admin-note-area"><h4>Student-visible progress updates</h4>{history.filter(h=>h.complaint_id===row.id&&h.note).slice(0,4).map(h=><div className="admin-saved-note" key={h.id}><p>{h.note}</p><small>{new Date(h.created_at).toLocaleString()}</small></div>)}<form onSubmit={e=>addProgressUpdate(e,row)}><textarea rows={2} maxLength={1000} value={progressDrafts[row.id]??""} onChange={e=>setProgressDrafts(current=>({...current,[row.id]:e.target.value}))} placeholder="Share a progress update with the student…"/><button className="secondary-button" disabled={saving==="progress-"+row.id||!progressDrafts[row.id]?.trim()}>{saving==="progress-"+row.id?<LoaderCircle className="spin" size={15}/>:null}Publish update</button></form></div>
       <div className="admin-note-area"><h4>Internal admin notes</h4>{notes.filter(n=>n.complaint_id===row.id).map(n=><div className="admin-saved-note" key={n.id}><p>{n.note}</p><small>{new Date(n.created_at).toLocaleString()}</small></div>)}<form onSubmit={e=>addNote(e,row)}><textarea rows={2} maxLength={2000} value={draftNotes[row.id]??""} onChange={e=>setDraftNotes(current=>({...current,[row.id]:e.target.value}))} placeholder="Record an internal update. Students will not see this note."/><button className="secondary-button" disabled={saving==="note-"+row.id||!draftNotes[row.id]?.trim()}>{saving==="note-"+row.id?<LoaderCircle className="spin" size={15}/>:null}Save note</button></form></div>
      </article>)}
      {filtered.length===0&&<div className="empty-state">No reports match these filters.</div>}

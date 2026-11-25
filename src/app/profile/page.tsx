@@ -25,6 +25,7 @@ export default function ProfilePage() {
   const [busy, setBusy] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const completion = Math.round([name.trim(), matric.trim(), course, level, avatar || preview].filter(Boolean).length / 5 * 100);
 
   useEffect(() => {
     let active = true;
@@ -119,6 +120,7 @@ export default function ProfilePage() {
       <section className="complaint-card profile-card profile-editor">
         {busy ? <div className="empty-state"><LoaderCircle className="spin" size={19}/> Loading profile…</div> : profile ? <>
           <div className="profile-avatar profile-avatar-large">{preview || avatar ? <img src={preview || avatar} alt="Profile preview" /> : <UserRound size={30}/>}</div>
+          <div className="profile-completion"><div><span>Profile completion</span><strong>{completion}%</strong></div><div className="profile-completion-track"><span style={{width:completion+"%"}}/></div><small>Add your course, level and picture to complete your student profile.</small></div>
           <form className="auth-form profile-form" onSubmit={save}>
             <label className="profile-photo-label"><span>Profile picture</span><span className="optional">Optional · JPG, PNG or WebP · max 3 MB</span><span className="profile-photo-control"><Camera size={16}/> Choose a photo<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>choosePhoto(e.target.files?.[0] ?? null)}/></span></label>
             {photo && <p className="file-name">Selected: {photo.name}</p>}

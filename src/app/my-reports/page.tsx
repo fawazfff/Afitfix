@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Activity, ArrowLeft, Bell, MapPin, Plus, Wrench } from "lucide-react";
+import { Activity, ArrowLeft, Bell, MapPin, Plus, Compass, UserRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Complaint, ComplaintStatus } from "@/lib/types";
 import { SignOutButton } from "@/app/components/sign-out-button";

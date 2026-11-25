@@ -12,11 +12,11 @@ export default function NotificationsPage(){
  const router=useRouter();
  const [items,setItems]=useState<Notice[]>([]);
  const [busy,setBusy]=useState(true);
- const [message,setMessage]=useState("");
+ const [message,setMessage]=useState("");\n const [userId,setUserId]=useState("");
  useEffect(()=>{let active=true;(async()=>{
   const supabase=createClient();
   const {data:{user}}=await supabase.auth.getUser();
-  if(!user){router.replace("/login");return;}
+  if(!user){router.replace("/login");return;}\n  setUserId(user.id);
   const {data,error}=await supabase.from("notifications").select("id,message,is_read,created_at,complaint_id").eq("user_id",user.id).order("created_at",{ascending:false}).limit(50);
   if(!active)return;
   if(error)setMessage(error.message);else setItems((data??[]) as Notice[]);
@@ -24,7 +24,7 @@ export default function NotificationsPage(){
  })();return()=>{active=false}},[router]);
  async function markAll(){
   const supabase=createClient();
-  const {error}=await supabase.from("notifications").update({is_read:true}).eq("is_read",false);
+  const {error}=await supabase.from("notifications").update({is_read:true}).eq("user_id",userId).eq("is_read",false);
   if(error)setMessage(error.message);else setItems(current=>current.map(item=>({...item,is_read:true})));
  }
  return <main className="auth-shell report-shell"><section className="report-card">

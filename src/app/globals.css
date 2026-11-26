@@ -679,3 +679,84 @@ button, a { transition: color .18s ease, background-color .18s ease, border-colo
 .profile-completion-track{height:6px;margin:10px 0 7px;overflow:hidden;border-radius:10px;background:#e5ebf4}
 .profile-completion-track span{display:block;height:100%;border-radius:10px;background:#2465b5;transition:width .2s ease}
 .profile-completion small{color:#8390a3;font-size:10px}
+
+
+/* AFIT Campus Utility student home */
+.student-home { background: #f7f8f5; }
+.student-home .topbar { background: rgb(255 255 255 / 96%); border-bottom-color: #e7e9e2; }
+.student-home .brand-mark { background: #fff; border: 1px solid #e6e9e4; border-radius: 10px; }
+.student-home .brand-mark img { width: 29px; height: 29px; object-fit: contain; }
+.student-home-wrap { max-width: 860px; }
+.student-greeting { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; padding:32px 0 22px; }
+.student-greeting .eyebrow { color:#55725e; letter-spacing:1.35px; }
+.student-greeting h1 { margin:8px 0 5px; font-size:clamp(27px,5vw,35px); line-height:1.08; letter-spacing:-1.25px; font-weight:750; color:#1c2d35; }
+.student-greeting p { margin:0; color:#68766f; font-size:14px; }
+.greeting-date { color:#718078; font-size:12px; padding-bottom:3px; }
+.campus-feature { position:relative; display:grid; grid-template-columns: minmax(0, .92fr) minmax(0,1.08fr); align-items:center; min-height:270px; overflow:hidden; border:1px solid #dfe8df; border-radius:18px; background:#edf3ed; }
+.campus-feature-copy { position:relative; z-index:1; padding:30px 0 30px 32px; }
+.feature-kicker { color:#54725c; font-size:10px; font-weight:800; letter-spacing:1.5px; }
+.campus-feature-copy h2 { margin:12px 0 10px; color:#1d3540; font-size:clamp(25px,3.4vw,36px); line-height:1.06; letter-spacing:-1.3px; font-weight:760; }
+.campus-feature-copy p { max-width:310px; margin:0; color:#5f716c; font-size:13px; line-height:1.65; }
+.campus-report-button { display:inline-flex; align-items:center; gap:10px; margin-top:20px; padding:11px 15px; border-radius:8px; background:#214f83; color:white; font-size:13px; font-weight:700; transition:background .18s ease, transform .18s ease; }
+.campus-report-button:hover { background:#183f6c; transform:translateY(-1px); }
+.campus-feature-art { position:relative; align-self:stretch; display:flex; flex-direction:column; justify-content:flex-end; min-width:0; padding:14px 14px 13px 0; }
+.campus-scene { width:100%; height:auto; max-height:255px; overflow:visible; }
+.campus-art-caption { position:absolute; right:18px; bottom:8px; color:#688074; font-size:10px; letter-spacing:.1px; }
+.student-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:16px 0 30px; }
+.student-stat { display:flex; align-items:center; gap:12px; min-height:78px; padding:14px 16px; border:1px solid #e6e9e3; border-radius:12px; background:#fff; }
+.student-stat-icon { display:grid; width:36px; height:36px; flex:0 0 36px; place-items:center; border-radius:10px; background:#eaf0f7; color:#315e88; }
+.stat-icon-amber { background:#f7f0e5; color:#a66c27; }
+.stat-icon-green { background:#e8f2e9; color:#467a53; }
+.student-stat strong { display:block; color:#20323a; font-size:22px; line-height:1.1; letter-spacing:-.6px; }
+.student-stat span:last-child { display:block; margin-top:4px; color:#748078; font-size:11px; }
+.student-section { margin:30px 0; }
+.student-section-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:13px; color:#587260; }
+.student-section-heading .eyebrow { color:#738178; font-size:9px; letter-spacing:1.25px; }
+.student-section-heading h2 { margin:5px 0 0; color:#26383e; font-size:19px; letter-spacing:-.45px; }
+.student-text-link { display:inline-flex; align-items:center; gap:6px; color:#315e83; font-size:12px; font-weight:700; }
+.announcement-list { padding:0 17px; border:1px solid #e6e9e3; border-radius:12px; background:#fff; }
+.announcement-row { display:grid; grid-template-columns:8px minmax(0,1fr); gap:12px; padding:16px 0; }
+.announcement-row + .announcement-row { border-top:1px solid #edf0eb; }
+.announcement-marker { width:7px; height:7px; margin-top:6px; border-radius:50%; background:#668c6c; }
+.announcement-row h3 { margin:0; color:#2c3e42; font-size:14px; }
+.announcement-row p { margin:5px 0; color:#6b7771; font-size:12px; line-height:1.55; white-space:pre-wrap; }
+.announcement-row small { color:#939b95; font-size:10px; }
+.student-report-list { overflow:hidden; border:1px solid #e5e9e3; border-radius:13px; background:#fff; }
+.student-report-row { display:grid; grid-template-columns:64px minmax(0,1fr) 28px; align-items:center; gap:13px; padding:13px 15px; }
+.student-report-row + .student-report-row { border-top:1px solid #edf0eb; }
+.student-report-thumb { width:64px; height:58px; border-radius:8px; object-fit:cover; background:#eef2ed; }
+.student-report-placeholder { display:grid; place-items:center; color:#8a9a8e; }
+.student-report-meta { display:flex; flex-wrap:wrap; align-items:center; gap:7px; color:#78847d; font-size:10px; }
+.student-report-main h3 { margin:5px 0 4px; color:#283b40; font-size:13px; font-weight:700; }
+.student-report-main h3 a:hover { color:#315e83; }
+.student-report-main p { display:flex; align-items:center; flex-wrap:wrap; gap:5px; margin:0; color:#7b8780; font-size:10px; }
+.student-report-main .status-pill { padding:3px 7px; font-size:9px; }
+.student-report-open { display:grid; width:28px; height:28px; place-items:center; border-radius:8px; color:#64796c; background:#f3f6f1; }
+.student-empty { display:flex; flex-direction:column; align-items:center; gap:8px; padding:32px 18px; border:1px dashed #d5ded5; border-radius:12px; background:#fff; color:#809087; text-align:center; }
+.student-empty strong { color:#34483f; font-size:14px; }
+.student-empty span { font-size:12px; }
+.student-empty a { display:inline-flex; align-items:center; gap:6px; margin-top:5px; color:#315e83; font-size:12px; font-weight:700; }
+.student-home-footnote { padding:10px 0 24px; color:#9aa39b; font-size:10px; text-align:center; }
+.student-home .bottom-nav { border-top-color:#e5e9e3; background:rgb(255 255 255 / 96%); }
+.student-home .nav-item.active { color:#315f83; }
+@media (max-width:640px) {
+  .student-greeting { align-items:flex-start; padding:25px 0 18px; }
+  .greeting-date { display:none; }
+  .campus-feature { grid-template-columns:1fr; min-height:0; }
+  .campus-feature-copy { padding:24px 22px 0; }
+  .campus-feature-copy h2 { font-size:29px; }
+  .campus-feature-copy p { max-width:340px; }
+  .campus-report-button { margin-top:15px; }
+  .campus-feature-art { min-height:174px; padding:0 5px 15px; }
+  .campus-scene { max-height:190px; }
+  .campus-art-caption { right:14px; bottom:5px; }
+  .student-stats { gap:8px; margin:12px 0 25px; }
+  .student-stat { flex-direction:column; align-items:flex-start; gap:7px; min-height:92px; padding:11px; }
+  .student-stat-icon { width:29px; height:29px; flex-basis:29px; }
+  .student-stat strong { font-size:19px; }
+  .student-stat span:last-child { font-size:10px; }
+  .student-report-row { grid-template-columns:52px minmax(0,1fr) 24px; gap:10px; padding:12px 10px; }
+  .student-report-thumb { width:52px; height:52px; }
+  .student-report-main h3 { font-size:12px; }
+  .student-report-main p { font-size:9px; }
+}

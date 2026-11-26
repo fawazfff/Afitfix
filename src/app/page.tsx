@@ -73,7 +73,7 @@ export default function Home() {
         <div className="hero-art" aria-label="AFIT students in graduation procession on campus">
           <div className="campus-photo-frame">
             <img
-              src="https://pbs.twimg.com/media/FySwwZ_XgAMXGGx.jpg"
+              src="https://afit.edu.ng/home/wp-content/uploads/2024/12/1-1024x683.jpg"
               alt="AFIT graduates gathered in procession on the Kaduna campus"
               className="campus-photo"
               loading="eager"

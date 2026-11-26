@@ -70,11 +70,11 @@ export default function Home() {
           </div>
           <div className="hero-note"><ShieldCheck size={16}/> Clear reports. Visible progress. One campus community.</div>
         </div>
-        <div className="hero-art" aria-label="AFIT students in graduation procession on campus">
+        <div className="hero-art" aria-label="AFIT campus building">
           <div className="campus-photo-frame">
             <img
-              src="https://afit.edu.ng/home/wp-content/uploads/2024/12/1-1024x683.jpg"
-              alt="AFIT graduates gathered in procession on the Kaduna campus"
+              src="/afit-campus-hero.webp"
+              alt="AFIT campus building with blue roof and landscaped grounds"
               className="campus-photo"
               loading="eager"
               fetchPriority="high"

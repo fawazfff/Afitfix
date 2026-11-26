@@ -70,21 +70,20 @@ export default function Home() {
           </div>
           <div className="hero-note"><ShieldCheck size={16}/> Clear reports. Visible progress. One campus community.</div>
         </div>
-        <div className="hero-art" aria-label="Illustration of a campus issue being reported and tracked">
-          <div className="art-sun"/>
-          <div className="art-orbit art-orbit-one"/>
-          <div className="art-orbit art-orbit-two"/>
-          <div className="campus-building">
-            <div className="building-roof"/>
-            <div className="building-sign">AFIT <span>·</span> CAMPUS</div>
-            <div className="building-columns"><i/><i/><i/><i/><i/></div>
-            <div className="building-base"/>
+        <div className="hero-art" aria-label="AFIT students in graduation procession on campus">
+          <div className="campus-photo-frame">
+            <img
+              src="https://pbs.twimg.com/media/FySwwZ_XgAMXGGx.jpg"
+              alt="AFIT graduates gathered in procession on the Kaduna campus"
+              className="campus-photo"
+              loading="eager"
+              fetchPriority="high"
+            />
+            <span className="campus-photo-label"><span/> LIFE AT AFIT</span>
           </div>
-          <div className="art-path"/>
-          <div className="report-float report-float-top"><span className="float-icon"><ClipboardList size={17}/></span><span><b>Issue submitted</b><small>Location added</small></span><Check size={17} className="float-check"/></div>
-          <div className="report-float report-float-bottom"><span className="float-icon float-icon-green"><CheckCircle2 size={17}/></span><span><b>Progress you can follow</b><small>Updates in one place</small></span></div>
-          <span className="art-spark art-spark-one">✳</span><span className="art-spark art-spark-two">✳</span>
-          <div className="art-caption">Small reports can lead to meaningful improvements.</div>
+          <div className="report-float report-float-top"><span className="float-icon"><ClipboardList size={17}/></span><span><b>Small reports matter</b><small>Every issue starts somewhere</small></span><Check size={17} className="float-check"/></div>
+          <div className="report-float report-float-bottom"><span className="float-icon float-icon-green"><CheckCircle2 size={17}/></span><span><b>Meaningful improvement</b><small>Progress the community can follow</small></span></div>
+          <div className="art-caption">A better campus starts with speaking up.</div>
         </div>
         <Link href="/how-it-works" className="scroll-cue"><span/> Explore Afitfix</Link>
       </section>
